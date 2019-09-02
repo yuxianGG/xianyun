@@ -6,14 +6,16 @@
       :rules="rules"
       class="form"
     >
-      <el-form-item class="form-item">
+      <el-form-item class="form-item" prop="username">
         <el-input
+          v-model="form.username"
           placeholder="用户名/手机"
         />
       </el-form-item>
 
-      <el-form-item class="form-item">
+      <el-form-item class="form-item" prop="password">
         <el-input
+          v-model="form.password"
           placeholder="密码"
           type="password"
         />
@@ -41,14 +43,36 @@ export default {
   data () {
     return {
       // 表单数据
-      form: {},
+      form: {
+        username: '',
+        password: ''
+      },
       // 表单的规则
-      rules: {}
+      rules: {
+        username: [
+          {
+            required: true,
+            message: '请输入用户名',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   methods: {
     handleLoginSubmit () {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
 
+        }
+      })
     }
   }
 }
