@@ -7,6 +7,7 @@
   >
     <el-form-item class="form-item">
       <el-input
+        v-model="form.username"
         placeholder="用户名手机"
       />
     </el-form-item>
@@ -14,6 +15,7 @@
     <el-form-item class="form-item">
       <!-- 文档地址：https://element.eleme.cn/#/zh-CN/component/input#fu-he-xing-shu-ru-kuang -->
       <el-input
+        v-model="form.captcha"
         placeholder="验证码"
       >
         <template slot="append">
@@ -26,12 +28,14 @@
 
     <el-form-item class="form-item">
       <el-input
+        v-model="form.nickname"
         placeholder="你的名字"
       />
     </el-form-item>
 
     <el-form-item class="form-item">
       <el-input
+        v-model="form.password"
         placeholder="密码"
         type="password"
       />
@@ -39,6 +43,7 @@
 
     <el-form-item class="form-item">
       <el-input
+        v-model="form.checkPassword"
         placeholder="确认密码"
         type="password"
       />
@@ -59,7 +64,13 @@ export default {
   data () {
     return {
       // 表单数据
-      form: {},
+      form: {
+        username: '',
+        nickname: '',
+        captcha: '',
+        password: '',
+        checkPassword: ''
+      },
       // 表单规则
       rules: {}
     }
