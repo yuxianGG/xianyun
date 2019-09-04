@@ -114,6 +114,34 @@ export default {
     // 注册
     handleRegSubmit () {
     //   console.log(this.form)
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          // 用...+变量名指向剩余的属性
+          const { checkPassword, ...rest } = this.form
+
+          // 调用注册接口
+          this.$axios({
+            url: '/accounts/register',
+            method: 'POST',
+            data: rest
+          }).then((res) => {
+            // 注册成功后帮用户自动登录
+            this.$store.commit('user/setUserInfo', res.data)
+            // console.log(res)
+            //   }).catch((err) => {
+            //     console.dir(err)
+            // 成功提示
+            this.$message({
+              message: '注册成功,正在跳转',
+              type: 'success'
+            })
+            // 跳转到首页
+            setTimeout(() => {
+              this.$router.replace('/')
+            }, 1000)
+          })
+        }
+      })
     }
   }
 }
