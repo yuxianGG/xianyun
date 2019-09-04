@@ -67,16 +67,29 @@ export default {
     }
   },
   methods: {
+    // 提交登录
     handleLoginSubmit () {
+      // 验证表单
       this.$refs.form.validate((valid) => {
         if (valid) {
           // 请求登录
-          this.$axios({
-            url: '/accounts/login',
-            method: 'POST',
-            data: this.form
-          }).then((res) => {
-            console.log(res)
+          // this.$axios({
+          //   url: '/accounts/login',
+          //   method: 'POST',
+          //   data: this.form
+          // }).then((res) => {
+          //   // console.log(res)
+          // })
+          this.$store.dispatch('user/login', this.form).then((res) => {
+            // 成功提示
+            this.$message({
+              message: '登录成功,正在跳转',
+              type: 'success'
+            })
+            // 跳转到首页
+            setTimeout(() => {
+              this.$router.replace('/')
+            }, 1000)
           })
         }
       })

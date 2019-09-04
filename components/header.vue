@@ -27,11 +27,11 @@
       <!-- 登录和用户信息功能 -->
       <el-row type="flex" align="middle">
         <!-- 如果有用户信息就显示 -->
-        <el-dropdown v-if="false">
+        <el-dropdown v-if="$store.state.user.userInfo.token">
           <el-row type="flex" align="middle" class="el-dropdown-link">
             <nuxt-link to="#">
-              <img src="http://157.122.54.189:9093/images/pic_sea.jpeg" alt="">
-              用户名
+              <img :src="$axios.defaults.baseURL + $store.state.user.userInfo.user.defaultAvatar" alt="">
+              {{ $store.state.user.userInfo.user.nickname }}
             </nuxt-link>
             <i class="el-icon-caret-bottom el-icon--right" />
           </el-row>
@@ -61,7 +61,15 @@
 export default {
   methods: {
     // 用户退出
-    handleLogout () {}
+    handleLogout () {
+      const { commit } = this.$store
+      commit('user/cleanUserInfo')
+
+      this.$message({
+        message: '退出成功',
+        type: 'success'
+      })
+    }
   }
 }
 </script>
