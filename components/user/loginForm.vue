@@ -70,7 +70,14 @@ export default {
     handleLoginSubmit () {
       this.$refs.form.validate((valid) => {
         if (valid) {
-
+          // 请求登录
+          this.$axios({
+            url: '/accounts/login',
+            method: 'POST',
+            data: this.form
+          }).then((res) => {
+            console.log(res)
+          })
         }
       })
     }
