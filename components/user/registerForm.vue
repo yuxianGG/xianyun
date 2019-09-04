@@ -5,14 +5,14 @@
     :rules="rules"
     class="form"
   >
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="username">
       <el-input
         v-model="form.username"
         placeholder="用户名手机"
       />
     </el-form-item>
 
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="captcha">
       <!-- 文档地址：https://element.eleme.cn/#/zh-CN/component/input#fu-he-xing-shu-ru-kuang -->
       <el-input
         v-model="form.captcha"
@@ -26,14 +26,14 @@
       </el-input>
     </el-form-item>
 
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="nickname">
       <el-input
         v-model="form.nickname"
         placeholder="你的名字"
       />
     </el-form-item>
 
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="password">
       <el-input
         v-model="form.password"
         placeholder="密码"
@@ -41,7 +41,7 @@
       />
     </el-form-item>
 
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="checkPassword">
       <el-input
         v-model="form.checkPassword"
         placeholder="确认密码"
@@ -62,6 +62,16 @@
 <script>
 export default {
   data () {
+    const checkPassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次密码输入不一致'))
+      } else {
+        // 代表通过验证
+        callback()
+      }
+    }
     return {
       // 表单数据
       form: {
@@ -72,7 +82,13 @@ export default {
         checkPassword: ''
       },
       // 表单规则
-      rules: {}
+      rules: {
+        username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+        nickname: [{ required: true, message: '昵称不能为空', trigger: 'blur' }],
+        captcha: [{ required: true, message: '验证码不能为空', trigger: 'blur' }],
+        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+        checkPassword: [{ validator: checkPassword, trigger: 'blur' }]
+      }
     }
   },
   methods: {
