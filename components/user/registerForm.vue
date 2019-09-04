@@ -94,6 +94,22 @@ export default {
   methods: {
     // 发送验证码
     handleSendCaptcha () {
+      // 判断手机号码为空,不请求
+      if (!this.form.username) {
+        this.$message.error('请输入手机号码')
+      }
+      // 发送验证码
+      this.$axios({
+        url: '/captchas',
+        method: 'POST',
+        data: {
+          tel: this.form.username // 手机号码
+        }
+      }).then((res) => {
+        //   解构
+        const { code } = res.data
+        this.$alert(`模拟手机验证码是${code},"提示"`)
+      })
     },
     // 注册
     handleRegSubmit () {
