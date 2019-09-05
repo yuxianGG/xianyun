@@ -187,7 +187,26 @@ export default {
 
     // 提交表单是触发
     handleSubmit () {
-      console.log(this.form)
+    //   console.log(this.form)
+    // 解构
+      const { departCity, destCity, departDate } = this.form
+
+      // 判断输入不能为空
+      if (!departCity) {
+        this.$alert('出发城市不能为空', '提示')
+      }
+      if (!destCity) {
+        this.$alert('到达城市不能为空', '提示')
+      }
+      if (!departDate) {
+        this.$alert('出发日期不能为空', '提示')
+      }
+
+      // 跳转到机票列表页面
+      this.$router.push({
+        path: '/air/flights',
+        query: this.form
+      })
     }
   }
 }
