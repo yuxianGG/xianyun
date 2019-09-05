@@ -21,6 +21,7 @@
         <!-- select：在下拉框中选中时候时候触发的事件 -->
 
         <el-autocomplete
+          v-model="form.departCity"
           :fetch-suggestions="queryDepartSearch"
           placeholder="请搜索出发城市"
           class="el-autocomplete"
@@ -66,6 +67,13 @@
 export default {
   data () {
     return {
+      form: {
+        departCity: '', // 出发城市
+        departCode: '', // 出发城市代码
+        destCity: '', // 到达城市
+        destCode: '', // 到达城市代码
+        departDate: '' // 日期字符串
+      },
       tabs: [
         { icon: 'iconfont icondancheng', name: '单程' },
         { icon: 'iconfont iconshuangxiang', name: '往返' }
@@ -82,10 +90,34 @@ export default {
 
     },
 
-    // 出发城市的搜索建议的事件
+    // 出发城市输入框获得焦点时触发
+    // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDepartSearch (value, cb) {
+      if (!value) {
 
+      }
+      // 根据用户的输入请求建议城市
+      this.$axios({
+        url: '/airs/city',
+        params: {
+          // 输入框的关键字
+          name: value
+        }
+      }).then((res) => {
+        // 数组
+        const { data } = res.data
+        // 给数组每个对象添加value属性
+        const newData = []
+        data.forEach((v) => {
+          v.value = v.name.replace('市', '')
+          // 把带有value属性的对象添加到新数组
+          newData.push(v)
+        })
+        // 显示到下拉列表
+        cb(newData)
+      })
     },
+
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDestSearch (value, cb) {
@@ -96,18 +128,22 @@ export default {
     handleDepartSelect (item) {
 
     },
+
     // 目标城市下拉选择时触发
     handleDestSelect (item) {
 
     },
+
     // 确认选择日期时触发
     handleDate (value) {
 
     },
+
     // 触发和目标城市切换时触发
     handleReverse () {
 
     },
+
     // 提交表单是触发
     handleSubmit () {
 
