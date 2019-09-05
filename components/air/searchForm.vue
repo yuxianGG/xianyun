@@ -6,7 +6,7 @@
         v-for="(item, index) in tabs"
         :key="index"
         :class="{active: index === currentTab}"
-        @click="handleSearchTab(item, index)"
+        @click="handleSearchTab(index)"
       >
         <i :class="item.icon" />{{ item.name }}
       </span>
@@ -90,8 +90,10 @@ export default {
   },
   methods: {
     // tab切换时触发
-    handleSearchTab (item, index) {
-
+    handleSearchTab (index) {
+      if (index === 1) {
+        this.$alert('目前暂时不支持往返', '提示')
+      }
     },
 
     // 出发城市输入框获得焦点时触发
@@ -182,7 +184,12 @@ export default {
 
     // 触发和目标城市切换时触发
     handleReverse () {
-
+      const { departCity, departCode, destCity, destCode } = this.form
+      // 交叉赋值
+      this.form.departCity = destCity
+      this.form.departCode = destCode
+      this.form.destCity = departCity
+      this.form.destCode = departCode
     },
 
     // 提交表单是触发
