@@ -1,6 +1,6 @@
 <template>
   <div class="flight-item">
-    <div>
+    <div @click="isShow = !isShow">
       <!-- 显示的机票信息 -->
       <el-row type="flex" align="middle" class="flight-info">
         <el-col :span="6">
@@ -22,11 +22,11 @@
           </el-row>
         </el-col>
         <el-col :span="6" class="flight-info-right">
-          ￥<span class="sell-price">{{ data.base_price }}</span>起
+          ￥<span class="sell-price">{{ data.base_price /2 }}</span>起
         </el-col>
       </el-row>
     </div>
-    <div class="flight-recommend">
+    <div v-show="isShow" class="flight-recommend">
       <!-- 隐藏的座位信息列表 -->
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="4">
@@ -34,12 +34,19 @@
         </el-col>
         <el-col :span="20">
           <!-- 可能会有多个座位，需要循环显示 -->
-          <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
+          <el-row
+            v-for="(item,index) in data.seat_infos"
+            :key="index"
+            type="flex"
+            justify="space-between"
+            align="middle"
+            class="flight-sell"
+          >
             <el-col :span="16" class="flight-sell-left">
-              <span>经济舱</span> | 上海一诺千金航空服务有限公司
+              <span>{{ item.name }}</span> | {{ item.supplierName }}
             </el-col>
             <el-col :span="5" class="price">
-              ￥1345
+              ￥{{ item.org_settle_price }}
             </el-col>
             <el-col :span="3" class="choose-button">
               <el-button
@@ -48,7 +55,7 @@
               >
                 选定
               </el-button>
-              <p>剩余：83</p>
+              <p>剩余：{{ item.discount }}</p>
             </el-col>
           </el-row>
         </el-col>
@@ -65,6 +72,11 @@ export default {
       type: Object,
       // 默认是空数组
       default: () => ({})
+    }
+  },
+  data () {
+    return {
+      isShow: false
     }
   },
   computed: {
