@@ -10,7 +10,7 @@
         <FlightsListHead />
 
         <!-- 航班信息 -->
-        <FlightsItem />
+        <FlightsItem v-for="(item,index) in flightsData.flights" :key="index" :data="item" />
         <div />
       </div>
 
@@ -33,8 +33,19 @@ export default {
   },
   data () {
     return {
-
+      // 机票列表返回的总数据
+      flightsData: {}
     }
+  },
+  mounted () {
+    // 请求航班列表数据
+    this.$axios({
+      url: 'airs',
+      params: this.$route.query
+    }).then((res) => {
+      // 赋值给总数据
+      this.flightsData = res.data
+    })
   }
 }
 </script>
