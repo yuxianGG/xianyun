@@ -89,22 +89,43 @@ export default {
   methods: {
     // 选择机场时候触发
     handleAirport (value) {
-
+      // 过滤数据.只保留选中机场的航班
+      const arr = this.data.flights.filter((v) => {
+        return v.org_airport_name === value
+      })
+      this.$emit('setDataList', arr)
     },
 
     // 选择出发时间时候触发
     handleFlightTimes (value) {
-
+      // 数组的解构赋值
+      const [from, to] = value.split(',')
+      // 过滤数据.只保留选中出发时间的航班
+      const arr = this.data.flights.filter((v) => {
+        // 每趟航班出发时间的小时
+        const current = v.dep_time.split(':')[0]
+        // 需要满足的时间段内
+        return +current >= +from && +current < +to
+      })
+      this.$emit('setDataList', arr)
     },
 
     // 选择航空公司时候触发
     handleCompany (value) {
-
+      // 过滤数据.只保留选中航空公司的航班
+      const arr = this.data.flights.filter((v) => {
+        return v.airline_name === value
+      })
+      this.$emit('setDataList', arr)
     },
 
     // 选择机型时候触发
     handleAirSize (value) {
-
+      // 过滤数据.只保留选中机型大小的航班
+      const arr = this.data.flights.filter((v) => {
+        return v.plane_size === value
+      })
+      this.$emit('setDataList', arr)
     },
 
     // 撤销条件时候触发
