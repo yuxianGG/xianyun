@@ -194,7 +194,7 @@ export default {
       this.form.destCode = departCode
     },
 
-    // 提交表单是触发
+    // 提交表单时触发
     handleSubmit () {
     //   console.log(this.form)
     // 解构
@@ -210,6 +210,14 @@ export default {
       if (!departDate) {
         this.$alert('出发日期不能为空', '提示')
       }
+
+      // 添加至本地存储
+      const arr = JSON.parse(localStorage.getItem('airs')) || []
+
+      arr.push(this.form)
+
+      // 把搜索的条件保存到本地
+      localStorage.setItem('airs', JSON.stringify(arr))
 
       // 跳转到机票列表页面
       this.$router.push({

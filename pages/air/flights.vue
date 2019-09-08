@@ -68,23 +68,34 @@ export default {
       }
     }
   },
+  watch: {
+    // watch可以监听this下的所有属性
+    $route () {
+      // 请求航班列表数据
+      this.getData()
+    }
+  },
   mounted () {
     // 请求航班列表数据
-    this.$axios({
-      url: 'airs',
-      params: this.$route.query
-    }).then((res) => {
-      // 赋值给总数据
-      this.flightsData = res.data
-      // 赋值给缓存总数据
-      this.cacheFlightsData = { ...res.data }
-      // 分页的总数
-      this.total = this.flightsData.flights.length
-      // 第一页的值
-      this.dataList = this.flightsData.flights.slice(0, this.pageSize)
-    })
+    this.getData()
   },
   methods: {
+    getData () {
+      // 请求航班列表数据
+      this.$axios({
+        url: 'airs',
+        params: this.$route.query
+      }).then((res) => {
+      // 赋值给总数据
+        this.flightsData = res.data
+        // 赋值给缓存总数据
+        this.cacheFlightsData = { ...res.data }
+        // 分页的总数
+        this.total = this.flightsData.flights.length
+        // 第一页的值
+        this.dataList = this.flightsData.flights.slice(0, this.pageSize)
+      })
+    },
     setDataList (arr) {
       // 修改总的航班列表
       this.flightsData.flights = arr
