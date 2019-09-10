@@ -56,6 +56,7 @@
           <el-checkbox
             :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
             border
+            @change="handleChange(item.id)"
           />
         </div>
       </div>
@@ -101,7 +102,9 @@ export default {
         id: ''
       }],
       //   机票数据
-      infoData: {}
+      infoData: {},
+      // 保险数据id的集合
+      insurances: []
     }
   },
   mounted () {
@@ -133,6 +136,20 @@ export default {
     // 移除乘机人
     handleDeleteUser (index) {
       this.users.splice(index, 1)
+    },
+
+    // 选中保险时触发
+    handleChange (id) {
+      // 先判断数组中是否已经包含该id
+      const index = this.insurances.indexOf(id)
+      // 包含了应该删除
+      if (index > -1) {
+        this.insurances.splice(index, 1)
+      } else {
+        // 添加id到数组
+        this.insurances.push(id)
+      }
+    //   console.log(this.insurances)
     },
 
     // 发送手机验证码
