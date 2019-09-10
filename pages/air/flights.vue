@@ -22,7 +22,7 @@
           @current-change="handleCurrentChange"
         />
         <div />
-        </flightsfilters>
+        <flightsfilters />
       </div>
 
       <!-- 侧边栏 -->
