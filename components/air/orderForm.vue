@@ -249,7 +249,15 @@ export default {
         },
         data
       }).then((res) => {
-        console.log(res)
+        // console.log(res)
+        // 订单id
+        const { id } = res.data.data
+        this.$router.push({
+          path: '/air/pay',
+          query: {
+            id
+          }
+        })
       })
     }
   }
