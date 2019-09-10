@@ -67,11 +67,11 @@
       <div class="contact">
         <el-form label-width="60px">
           <el-form-item label="姓名">
-            <el-input />
+            <el-input v-model="contactName" />
           </el-form-item>
 
           <el-form-item label="手机">
-            <el-input placeholder="请输入内容">
+            <el-input v-model="contactPhone" placeholder="请输入内容">
               <template slot="append">
                 <el-button @click="handleSendCaptcha">
                   发送验证码
@@ -81,7 +81,7 @@
           </el-form-item>
 
           <el-form-item label="验证码">
-            <el-input />
+            <el-input v-model="captcha" />
           </el-form-item>
         </el-form>
         <el-button type="warning" class="submit" @click="handleSubmit">
@@ -104,7 +104,13 @@ export default {
       //   机票数据
       infoData: {},
       // 保险数据id的集合
-      insurances: []
+      insurances: [],
+      contactName: '', // 联系人
+      contactPhone: '', // 联系电话
+      captcha: '', // 验证码
+      invoice: false, // 发票字段，默认false
+      seat_xid: '', // 座位id，来自于url的参数
+      air: ''// 航班的id,来自于url的id
     }
   },
   mounted () {
@@ -154,12 +160,37 @@ export default {
 
     // 发送手机验证码
     handleSendCaptcha () {
-
+      // 判断如果手机号码是空,不请求
+      if (!this.contactPhone) {
+        this.$message.error('请输入手机号码')
+      }
+      // 发送验证码
+      this.$axios({
+        url: '/captchas',
+        method: 'POST',
+        data: {
+          tel: this.contactPhone // 手机号码
+        }
+      }).then((res) => {
+        const { code } = res.data
+        this.$alert(`模拟手机验证码是：${code}`, '提示')
+      })
     },
 
     // 提交订单
     handleSubmit () {
-
+      // 提交给后台接口的字段
+      const data = {
+        users: this.users,
+        insurances: this.insurances,
+        contactName: this.contactName,
+        contactPhone: this.contactPhone,
+        invoice: this.invoice,
+        captcha: this.captcha,
+        seat_xid: this.$route.query.seat_xid,
+        air: this.$route.query.id
+      }
+      console.log(data)
     }
   }
 }
