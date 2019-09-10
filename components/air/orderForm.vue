@@ -102,7 +102,10 @@ export default {
         id: ''
       }],
       //   机票数据
-      infoData: {},
+      infoData: {
+        seat_infos: {},
+        insurances: []
+      },
       // 保险数据id的集合
       insurances: [],
       contactName: '', // 联系人
@@ -123,8 +126,10 @@ export default {
         seat_xid: seatxid
       }
     }).then((res) => {
-    //   console.log(res)
+      console.log(res.data, 111111)
       this.infoData = res.data
+      // 调用store的方法，把infoData存到store中
+      this.$store.commit('air/setInfoData', this.infoData)
     })
   },
   methods: {

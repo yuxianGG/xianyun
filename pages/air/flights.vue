@@ -22,9 +22,7 @@
           @current-change="handleCurrentChange"
         />
         <div />
-        <flightsfilters />
       </div>
-
       <!-- 侧边栏 -->
       <FlightsAside />
     </el-row>
