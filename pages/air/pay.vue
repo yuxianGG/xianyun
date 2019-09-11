@@ -28,8 +28,33 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 export default {
+  mounted () {
+    // userInfo在页面加载完才赋值
+    setTimeout((v) => {
+      const { id } = this.$route.query
+      const { user: { userInfo } } = this.$store.state
 
+      // 请求二维码
+      this.$axios({
+        url: `airorders/${id}`,
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`
+        }
+      }).then((res) => {
+        console.log(res)
+        // price 用于展示
+        const { payInfo } = res.data
+
+        // 生成二维码到canvas
+        const stage = document.querySelector('#qrcode-stage')
+        QRCode.toCanvas(stage, payInfo.code_url, {
+          width: 200
+        })
+      })
+    }, 200)
+  }
 }
 </script>
 
